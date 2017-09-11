@@ -33,11 +33,11 @@ public class MockyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getb = (Button) findViewById(R.id.get_b);
+   /*     getb = (Button) findViewById(R.id.get_b);
         getqueryb = (Button) findViewById(R.id.get_query_b);
         postb = (Button) findViewById(R.id.post_b);
 
-        respone = (TextView) findViewById(R.id.respone_t);
+        respone = (TextView) findViewById(R.id.respone_t);*/
 
         getb.setOnClickListener(new View.OnClickListener() {
             @Override
