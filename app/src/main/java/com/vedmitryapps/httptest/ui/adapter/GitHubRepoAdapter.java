@@ -12,9 +12,6 @@ import com.vedmitryapps.httptest.api.model.GitHubRepo;
 
 import java.util.List;
 
-/**
- * Created by Dmitry Vedmed on 10.09.2017.
- */
 
 public class GitHubRepoAdapter extends ArrayAdapter<GitHubRepo> {
 
