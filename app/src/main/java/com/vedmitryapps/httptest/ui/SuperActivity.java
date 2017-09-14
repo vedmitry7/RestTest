@@ -4,13 +4,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
 
 import com.vedmitryapps.httptest.R;
 import com.vedmitryapps.httptest.api.model.Picture;
-import com.vedmitryapps.httptest.api.model.PostModel;
 import com.vedmitryapps.httptest.api.service.UmoriliApi;
 import com.vedmitryapps.httptest.api.service.UnsplashClient;
-import com.vedmitryapps.httptest.ui.adapter.PostsAdapter;
+import com.vedmitryapps.httptest.ui.adapter.PicturesAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +22,10 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class ActivityUmorili extends AppCompatActivity {
+public class SuperActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
-    List<PostModel> posts;
+    List<Picture> pictures;
 
 
    UmoriliApi umoriliApi;
@@ -36,13 +36,13 @@ public class ActivityUmorili extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_umorili);
 
-        posts = new ArrayList<>();
+        pictures = new ArrayList<>();
 
         recyclerView = (RecyclerView) findViewById(R.id.posts_recycle_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        PostsAdapter adapter = new PostsAdapter(posts);
+        final PicturesAdapter adapter = new PicturesAdapter(pictures, this);
         recyclerView.setAdapter(adapter);
 
 
@@ -55,13 +55,13 @@ public class ActivityUmorili extends AppCompatActivity {
         umoriliApi.getData("bash", 50).enqueue(new Callback<List<PostModel>>() {
             @Override
             public void onResponse(Call<List<PostModel>> call, Response<List<PostModel>> response) {
-                posts.addAll(response.body());
+                pictures.addAll(response.body());
                 recyclerView.getAdapter().notifyDataSetChanged();
             }
 
             @Override
             public void onFailure(Call<List<PostModel>> call, Throwable t) {
-                Toast.makeText(ActivityUmorili.this, "An error occurred during networking", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SuperActivity.this, "An error occurred during networking", Toast.LENGTH_SHORT).show();
             }
         });*/
 
@@ -73,23 +73,33 @@ public class ActivityUmorili extends AppCompatActivity {
 
         UnsplashClient client = retrofit.create(UnsplashClient.class);
 
-        Call<List<Picture>> call = client.getPictures("264bdb53c80599fa1f9cc027aae4e8a2bf3798551a00828df44750be8a784e3b", 2);
+        Call<List<Picture>> call = client.getPictures("264bdb53c80599fa1f9cc027aae4e8a2bf3798551a00828df44750be8a784e3b", 10);
 
         call.enqueue(new Callback<List<Picture>>() {
             @Override
             public void onResponse(Call<List<Picture>> call, Response<List<Picture>> response) {
                 System.out.println("qqqq = " + call.request().toString());
-                System.out.println("qqqq = " + call.request().body());
                 for (Picture pic:response.body()
                      ) {
                     System.out.println("qqqq = " + pic.getId());
-                    System.out.println("qqqq = " + pic.getUser());
+                    System.out.println("qqqq = " + pic.getUser().getBio());
+                    System.out.println("qqqq = " + pic.getLinks().getDownload());
+                    System.out.println("qqqq = " + pic.getLinks().getSelf());
+                    System.out.println("qqqq = " + pic.getUrls().getSmall());
+                    System.out.println("qqqq = " + pic.getUrls().getFull());
+                    System.out.println("qqqq = " + pic.getUrls().getSmall());
+                    System.out.println("qqqq = " + pic.getDescription());
+
                 }
+
+
+                pictures.addAll(response.body());
+                adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onFailure(Call<List<Picture>> call, Throwable t) {
-
+                Toast.makeText(SuperActivity.this, "error", Toast.LENGTH_SHORT).show();
             }
         });
 
