@@ -11,7 +11,8 @@ import retrofit2.http.Query;
 
 public interface UnsplashClient {
 
-    @GET("/photos")
+    @GET("/photos/curated")
     Call<List<Picture>> getPictures(@Query("client_id") String id,
+                                    @Query("page") int page,
                                     @Query("per_page") int number);
 }
