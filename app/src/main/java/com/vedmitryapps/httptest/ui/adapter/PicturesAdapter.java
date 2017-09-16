@@ -37,32 +37,17 @@ public class PicturesAdapter extends RecyclerView.Adapter<PicturesAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-       // System.out.println("scroll list size - " + pictures.size());
-       // System.out.println("scroll bind pos  - " + position);
-
         Picture pic = pictures.get(position);
-
-        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            holder.post.setText(Html.fromHtml(post.getElementPureHtml(), Html.FROM_HTML_MODE_LEGACY));
-        } else {
-            holder.post.setText(Html.fromHtml(post.getElementPureHtml()));
-        }
-        holder.site.setText(post.getSite());*/
-
         String url = pic.getLinks().getDownload();
-       // System.out.println("qqqqqqqqqqqqq = " + url);
-
-
-        //int x = displayMetrics.widthPixels/3;
         if(url != null)
    /*     Picasso.with(context)
                 .load(pic.getUrls().getSmall())
                 .resize(displayMetrics.widthPixels/3, displayMetrics.widthPixels/3)
                 .centerCrop()
                 .into(holder.imageView);*/
-
         Glide
                 .with(context)
+
                 .load(pic.getUrls().getSmall())
                 .override(displayMetrics.widthPixels/3, displayMetrics.widthPixels/3)
                 .centerCrop()
@@ -78,7 +63,7 @@ public class PicturesAdapter extends RecyclerView.Adapter<PicturesAdapter.ViewHo
         return pictures.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView imageView;
         TextView textView;
@@ -87,6 +72,11 @@ public class PicturesAdapter extends RecyclerView.Adapter<PicturesAdapter.ViewHo
             super(itemView);
             imageView = (ImageView) itemView.findViewById(R.id.imageView);
             textView = (TextView) itemView.findViewById(R.id.textPosition);
+        }
+
+        @Override
+        public void onClick(View view) {
+
         }
     }
 }

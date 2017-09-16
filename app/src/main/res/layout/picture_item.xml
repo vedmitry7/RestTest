@@ -11,11 +11,13 @@
 
     <TextView
         android:id="@+id/textPosition"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="33dp"
+        android:textSize="24dp"
         android:text="45"
-        android:textColor="#FF0000"/>
+        android:textColor="#55FF0000"
+        android:paddingRight="2dp"
+        android:layout_alignParentRight="true" />
 </RelativeLayout>

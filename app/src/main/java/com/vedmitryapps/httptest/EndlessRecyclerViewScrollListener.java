@@ -5,16 +5,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 
-/**
- * Created by Dmitry Vedmed on 15.09.2017.
- */
 
 public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnScrollListener {
     // Минимальное количество оставшихся элементов в адаптере, после достижение
     // первого элемента из которых начнется загрузка данных (<a href="#threshold">threshold</a>)
     private int visibleThreshold = 5;
     // Текущий индекс в коллекции загруженных данных
-    private int currentPage = 0;
+    private int currentPage = 1;
     // Общее количество элементов после предыдущей подгрузки новых данных
     private int previousTotalItemCount = 0;
     // True - если мы в ожидании загрузки свежей порции данных
