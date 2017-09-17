@@ -10,5 +10,7 @@ public class Test {
         Observable<String> myObservable = (Observable<String>) Observable.just("Hello, world!")
                 .subscribe(s -> System.out.println(s));
 
+
+
     }
 }
