@@ -3,6 +3,7 @@ package com.vedmitryapps.httptest;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
+import android.util.Log;
 
 import com.vedmitryapps.httptest.api.model.Picture;
 
@@ -12,8 +13,12 @@ import java.util.List;
 
 public class PicturesLoader extends AsyncTaskLoader<List<Picture>> {
 
-    public PicturesLoader(Context context) {
+    private int count;
+
+    public PicturesLoader(Context context, int count) {
         super(context);
+        Log.i("TAG22", "new PicturesLoader constructor" + count);
+        this.count = count;
     }
 
     @Override
@@ -26,7 +31,7 @@ public class PicturesLoader extends AsyncTaskLoader<List<Picture>> {
     public List<Picture> loadInBackground() {
 
         try {
-            return App.getApi().getPictures(App.CLIENT_ID, 1, 30)
+            return App.getApi().getPictures(App.CLIENT_ID, count, 30)
                     .execute().body();
         } catch (IOException e) {
             e.printStackTrace();

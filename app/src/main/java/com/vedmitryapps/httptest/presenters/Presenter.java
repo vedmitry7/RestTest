@@ -19,7 +19,7 @@ public class Presenter implements MessagePresenter {
     }
 
 
-    void loadNextPictures( int page){
+    void loadNextPictures(int page){
         System.out.println("scroll - loadNextPictures " + page);
 
         Call<List<Picture>> call = App.getApi().getPictures(App.CLIENT_ID, page, 30);

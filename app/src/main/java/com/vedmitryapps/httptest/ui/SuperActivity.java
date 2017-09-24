@@ -16,7 +16,6 @@ import com.vedmitryapps.httptest.PictureLoaderCallbacks;
 import com.vedmitryapps.httptest.R;
 import com.vedmitryapps.httptest.api.model.Picture;
 import com.vedmitryapps.httptest.presenters.MessageView;
-import com.vedmitryapps.httptest.presenters.Presenter;
 import com.vedmitryapps.httptest.ui.adapter.PicturesAdapter;
 import com.vedmitryapps.httptest.ui.adapter.RecyclerItemClickListener;
 
@@ -42,7 +41,7 @@ public class SuperActivity extends AppCompatActivity implements MessageView {
         gridLayoutManager = new GridLayoutManager(this, 3);
         recyclerView.setLayoutManager(gridLayoutManager);
 
-        final Presenter presenter = new Presenter(this);
+       //final Presenter presenter = new Presenter(this);
 
         final PicturesAdapter adapter = new PicturesAdapter(pictures, this);
         recyclerView.setAdapter(adapter);
@@ -54,7 +53,9 @@ public class SuperActivity extends AppCompatActivity implements MessageView {
             public void onLoadMore(int page, int totalItemsCount) {
                 System.out.println("scroll page - " + page);
                 System.out.println("scroll total  - " + totalItemsCount);
-               // presenter.onScrollToEnd(page);
+                Log.i("TAG22", "page - " + page);
+                // presenter.onScrollToEnd(page);
+                initLoader(page);
             }
         });
 
@@ -65,14 +66,17 @@ public class SuperActivity extends AppCompatActivity implements MessageView {
                     }
 
                     @Override public void onLongItemClick(View view, int position) {
-
                     }
                 })
         );
       //  presenter.onScrollToEnd(1);
 
-        getSupportLoaderManager().initLoader(R.id.posts_recycle_view, Bundle.EMPTY, new PictureLoaderCallbacks(getApplicationContext(), this));
+        getSupportLoaderManager().initLoader(R.id.posts_recycle_view, Bundle.EMPTY, new PictureLoaderCallbacks(getApplicationContext(), this, 1));
+    }
 
+    void initLoader(int page){
+        Log.i("TAG22", "initLoader page - " + page);
+        getSupportLoaderManager().initLoader(R.id.posts_recycle_view + page, Bundle.EMPTY, new PictureLoaderCallbacks(getApplicationContext(), this, page));
     }
 
 
