@@ -18,7 +18,7 @@ public class PictureLoaderCallbacks implements android.support.v4.app.LoaderMana
 
 
     public PictureLoaderCallbacks(Context context, MessageView view, int count ) {
-        Log.i("TAG22", "PictureLoaderCallback constructor" + count);
+        Log.i("TAG22", "PictureLoaderCallback constructor " + count);
         this.context = context;
         this.view = view;
         this.count = count;
@@ -26,6 +26,7 @@ public class PictureLoaderCallbacks implements android.support.v4.app.LoaderMana
 
     @Override
     public Loader<List<Picture>> onCreateLoader(int i, Bundle bundle) {
+        Log.i("TAG22", "PictureLoaderCallback onCreateLoader");
         if(i == R.id.posts_recycle_view + count) {
             return new PicturesLoader(context, count);
         }
@@ -42,6 +43,7 @@ public class PictureLoaderCallbacks implements android.support.v4.app.LoaderMana
 
     @Override
     public void onLoaderReset(Loader<List<Picture>> loader) {
+        Log.i("TAG22", "PictureLoaderCallback onLoaderReset");
 
     }
 }

@@ -29,6 +29,8 @@ public class SuperActivity extends AppCompatActivity implements MessageView {
     RecyclerView recyclerView;
     List<Picture> pictures;
     GridLayoutManager gridLayoutManager;
+    private int pageCount;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,10 +53,12 @@ public class SuperActivity extends AppCompatActivity implements MessageView {
 
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
+                pageCount = page;
                 System.out.println("scroll page - " + page);
                 System.out.println("scroll total  - " + totalItemsCount);
-                Log.i("TAG22", "page - " + page);
+                Log.i("TAG22", "OnScrollListener page - " + page);
                 // presenter.onScrollToEnd(page);
+                if(page > pageCount)
                 initLoader(page);
             }
         });
@@ -70,8 +74,17 @@ public class SuperActivity extends AppCompatActivity implements MessageView {
                 })
         );
       //  presenter.onScrollToEnd(1);
+        if(savedInstanceState!=null)
+        pageCount = savedInstanceState.getInt("pageCount");
+        Log.i("TAG22", "onCreate pageCount - " + pageCount);
 
-        getSupportLoaderManager().initLoader(R.id.posts_recycle_view, Bundle.EMPTY, new PictureLoaderCallbacks(getApplicationContext(), this, 1));
+        if(pageCount > 0) {
+            for (int i = 0; i < pageCount; i++) {
+                getSupportLoaderManager().initLoader(R.id.posts_recycle_view + 1 + i, Bundle.EMPTY, new PictureLoaderCallbacks(getApplicationContext(), this, 1 + i));
+            }
+        }   else {
+            getSupportLoaderManager().initLoader(R.id.posts_recycle_view + 1, Bundle.EMPTY, new PictureLoaderCallbacks(getApplicationContext(), this, 1));
+        }
     }
 
     void initLoader(int page){
@@ -84,17 +97,31 @@ public class SuperActivity extends AppCompatActivity implements MessageView {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable(LAYOUT_MANAGER_KEY, recyclerView.getLayoutManager().onSaveInstanceState());
+        int currentVisiblePosition;
+        currentVisiblePosition = ((LinearLayoutManager)recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+        outState.putInt("recKey", currentVisiblePosition);
+        Log.i("TAG22", "onSaveInstanceState " + currentVisiblePosition);
+
+
+        outState.putInt("pageCount", pageCount);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         Parcelable recyclerViewLayoutState = savedInstanceState.getParcelable(LAYOUT_MANAGER_KEY);
-        recyclerView.getLayoutManager().onRestoreInstanceState(recyclerViewLayoutState);
+        //recyclerView.getLayoutManager().onRestoreInstanceState(recyclerViewLayoutState);
+        //Log.i("TAG22", "onRestoreInstanceState " + recyclerViewLayoutState.describeContents() + " .");
+
+        int currentVisiblePosition = savedInstanceState.getInt("recKey");
+        if(currentVisiblePosition < pictures.size())
+        recyclerView.getLayoutManager().scrollToPosition(currentVisiblePosition);
+        Log.i("TAG22", "onRestoreInstanceState " + currentVisiblePosition + " .");
     }
 
     @Override
     public void updateList(List<Picture> list) {
+        Log.i("TAG22", "update list");
         pictures.addAll(list);
         recyclerView.getAdapter().notifyDataSetChanged();
     }
@@ -130,9 +157,18 @@ public class SuperActivity extends AppCompatActivity implements MessageView {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.i("TAG22", "onDestroy" );
+    protected void onPause() {
+        super.onPause();
+        long currentVisiblePosition;
+        currentVisiblePosition = ((LinearLayoutManager)recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+        Log.i("TAG22", "onPause pos - " + currentVisiblePosition);
 
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i("TAG22", "onDestroy");
+    }
+
 }

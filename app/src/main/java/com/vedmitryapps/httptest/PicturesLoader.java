@@ -17,19 +17,20 @@ public class PicturesLoader extends AsyncTaskLoader<List<Picture>> {
 
     public PicturesLoader(Context context, int count) {
         super(context);
-        Log.i("TAG22", "new PicturesLoader constructor" + count);
+        Log.i("TAG22", "PicturesLoader constructor" + count);
         this.count = count;
     }
 
     @Override
     protected void onStartLoading() {
         super.onStartLoading();
+        Log.i("TAG22", "PictureLoader on start loading");
         forceLoad();
     }
 
     @Override
     public List<Picture> loadInBackground() {
-
+        Log.i("TAG22", "PictureLoader loadInBackground");
         try {
             return App.getApi().getPictures(App.CLIENT_ID, count, 30)
                     .execute().body();
